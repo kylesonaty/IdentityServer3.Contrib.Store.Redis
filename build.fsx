@@ -21,6 +21,11 @@ let releaseNotes =
     ReadFile "ReleaseNotes.md"
     |> ReleaseNotesHelper.parseReleaseNotes
 
+let topLevelNugetDependencies = Set.ofArray [| "StackExchange.Redis"; "IdentityServer3"; "Newtonsoft.Json" |]
+
+let filterNugetDependencies(dependencies:seq<string * string>) =
+    dependencies |> Seq.where(fun (n,v) -> topLevelNugetDependencies.Contains n) |> List.ofSeq
+
 // Targets
 Target "Clean" (fun _ ->
     CleanDirs [buildDir; testDir]
@@ -72,6 +77,7 @@ Target "Nuget" (fun _ ->
             WorkingDir = packagingDir
             Version = releaseNotes.NugetVersion
             ReleaseNotes = toLines releaseNotes.Notes
+            Dependencies = getDependencies "src/IdentityServer3.Contrib.Store.Redis/packages.config" |> filterNugetDependencies
             AccessKey = getBuildParamOrDefault "nugetaccesskey" ""
             Publish = hasBuildParam "nugetaccesskey" })
             "IdentityServer3.Contrib.Store.Redis.nuspec"

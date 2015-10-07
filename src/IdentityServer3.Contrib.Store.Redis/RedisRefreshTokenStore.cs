@@ -27,12 +27,22 @@ namespace IdentityServer3.Contrib.Store.Redis
             _db = connectionMultiplexer.GetDatabase(db);
         }
 
+        /// <summary>
+        /// Saves the token with its given key
+        /// </summary>
+        /// <param name="key">The key for the token</param>
+        /// <param name="value">The refresh token to serialize and store</param>
         public async Task StoreAsync(string key, RefreshToken value)
         {
             var json = ToJson(value);
             await _db.StringSetAsync(key, json); 
         }
 
+        /// <summary>
+        /// Retrieves the token using its key 
+        /// </summary>
+        /// <param name="key">The key for the token</param>
+        /// <returns>A Taks with the token</returns>
         public async Task<RefreshToken> GetAsync(string key)
         {
             var json = await _db.StringGetAsync(key);
@@ -40,6 +50,10 @@ namespace IdentityServer3.Contrib.Store.Redis
             return token;
         }
 
+        /// <summary>
+        /// Removes the token from the store with a given key
+        /// </summary>
+        /// <param name="key">The key of the token</param>
         public async Task RemoveAsync(string key)
         {
             await _db.KeyDeleteAsync(key);

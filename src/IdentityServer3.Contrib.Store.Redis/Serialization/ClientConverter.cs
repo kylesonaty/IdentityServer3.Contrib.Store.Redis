@@ -13,7 +13,7 @@ namespace IdentityServer3.Contrib.Store.Redis.Serialization
 
         public ClientConverter(IClientStore clientStore)
         {
-            if (clientStore == null) throw new ArgumentNullException("clientStore");
+            if (clientStore == null) throw new ArgumentNullException(nameof(clientStore));
             _clientStore = clientStore;
         }
 

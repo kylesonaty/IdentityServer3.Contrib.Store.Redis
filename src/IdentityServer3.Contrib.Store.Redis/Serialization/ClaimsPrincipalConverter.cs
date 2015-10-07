@@ -10,7 +10,6 @@ namespace IdentityServer3.Contrib.Store.Redis.Serialization
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var source = (ClaimsPrincipal)value;
-
             var target = new ClaimsPrincipalLite
             {
                 AuthenticationType = source.Identity.AuthenticationType,

@@ -14,14 +14,13 @@ namespace IdentityServer3.Contrib.Store.Redis.Serialization
 
         public ScopeConverter(IScopeStore scopeStore)
         {
-            if (scopeStore == null) throw new ArgumentNullException("scopeStore");
+            if (scopeStore == null) throw new ArgumentNullException(nameof(scopeStore));
             _scopeStore = scopeStore;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var source = (Scope)value;
-
             var target = new ScopeLite
             {
                 Name = source.Name
@@ -33,8 +32,7 @@ namespace IdentityServer3.Contrib.Store.Redis.Serialization
         {
             var source = serializer.Deserialize<ScopeLite>(reader);
             var factory = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
-            return
-                factory.StartNew(async () => await _scopeStore.FindScopesAsync(new string[] {source.Name}))
+            return factory.StartNew(async () => await _scopeStore.FindScopesAsync(new[] {source.Name}))
                     .Unwrap()
                     .GetAwaiter()
                     .GetResult()

@@ -8,8 +8,7 @@ namespace IdentityServer3.Contrib.Store.Redis.Serialization
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Claim source = (Claim)value;
-
+            var source = (Claim)value;
             var target = new ClaimLite
             {
                 Type = source.Type,

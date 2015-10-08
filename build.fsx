@@ -4,7 +4,13 @@ open Fake
 open Fake.Testing
 open System
 
-RestorePackages()
+RestorePackage (fun p ->
+         { p with
+             OutputPath = "./src/packages"}) "src/IdentityServer3.Contrib.Store.Redis/packages.config"
+
+RestorePackage (fun p ->
+        { p with
+            OutputPath = "./src/packages"}) "src/IdentityServer3.Contrib.Store.Redis.Tests/packages.config"
 
 // Properties
 let buildDir = "./build/"

@@ -16,7 +16,6 @@ let projectName = "IdentityServer3.Contrib.Store.Redis"
 let projectDescription = "Redis Store for Identity Server 3"
 let projectSummary = projectDescription
 
-
 let releaseNotes =
     ReadFile "ReleaseNotes.md"
     |> ReleaseNotesHelper.parseReleaseNotes
@@ -25,6 +24,12 @@ let topLevelNugetDependencies = Set.ofArray [| "StackExchange.Redis"; "IdentityS
 
 let filterNugetDependencies(dependencies:seq<string * string>) =
     dependencies |> Seq.where(fun (n,v) -> topLevelNugetDependencies.Contains n) |> List.ofSeq
+
+MSBuildDefaults <- {
+  MSBuildDefaults with
+    ToolsVersion = Some "14.0"
+    Verbosity = Some MSBuildVerbosity.Minimal
+}
 
 // Targets
 Target "Clean" (fun _ ->

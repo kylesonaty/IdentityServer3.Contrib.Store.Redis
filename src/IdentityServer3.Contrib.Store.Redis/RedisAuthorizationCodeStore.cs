@@ -23,7 +23,7 @@ namespace IdentityServer3.Contrib.Store.Redis
         /// <param name="db">The redis db to use to store the tokens</param>
         public RedisAuthorizationCodeStore(IClientStore clientStore, IScopeStore scopeStore, string config, int db = 0) :base(clientStore,scopeStore)
         {
-            var connectionMultiplexer = ConnectionMultiplexer.Connect(config);
+            var connectionMultiplexer = RedisConnectionMultiplexerStore.GetConnectionMultiplexer(config);
             _db = connectionMultiplexer.GetDatabase(db);
         }
 

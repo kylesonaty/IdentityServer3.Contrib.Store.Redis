@@ -6,3 +6,6 @@
 
 ### New in 0.0.2 (Released 2015/11/16)
 * Store Redis ConnectionMultiplexer per config for single use
+
+### New in 0.0.3 (Released 2015/11/16)
+* Handle Redis disconnects 

@@ -13,10 +13,12 @@ namespace IdentityServer3.Contrib.Store.Redis
             ConnectionMultiplexer multiplexer;
             Multiplexers.TryGetValue(hash, out multiplexer);
 
-            if (multiplexer != null) return multiplexer;
-
-            multiplexer = ConnectionMultiplexer.Connect(config);
-            Multiplexers.Add(hash, multiplexer);
+            if (multiplexer == null || !multiplexer.IsConnected)
+            {
+                multiplexer = ConnectionMultiplexer.Connect(config);
+                Multiplexers.Remove(hash);
+                Multiplexers.Add(hash, multiplexer);
+            }
 
             return multiplexer;
         }
